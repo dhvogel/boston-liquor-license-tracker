@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm run test:client && npm run test:scripts",
     "test:client": "cd client && npm test",
-    "test:scripts": "cd scripts && python -m pytest -v"
+    "test:scripts": "cd scripts && python3 -m pytest -v",
+    "install:python": "pip3 install -r requirements.txt"
   },
   "author": "",
   "license": "ISC"

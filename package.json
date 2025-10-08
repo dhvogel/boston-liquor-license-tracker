@@ -4,7 +4,9 @@
   "description": "Code for Boston Liquor License Tracker Project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run test:client && npm run test:scripts",
+    "test:client": "cd client && npm test",
+    "test:scripts": "cd scripts && python -m pytest -v"
   },
   "author": "",
   "license": "ISC"

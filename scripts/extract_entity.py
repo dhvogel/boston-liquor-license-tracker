@@ -103,7 +103,7 @@ def extract_hearing_date(pdf_path: str) -> datetime:
         except Exception as e:
             raise ValueError(f"Could not conver date string to iso format: {e}")
     else:
-        raise ValueError(f"Could not find date in the pdf: {e}")
+        raise ValueError(f"Could not find date in the pdf: {pdf_path}")
 
 def extract_entities_from_pdf(pdf_path: str) -> List[str]:
     heading_regex: str = r'^\d+\.?\s+.*'
@@ -190,8 +190,13 @@ def write_to_file(result: List[Dict[str, Optional[str]]]) -> None:
 
     if existing_data:
         last_entity_index = existing_data[len(existing_data)-1]['index']
-        for i, entity in enumerate(result, start=last_entity_index+1):
-            entity["index"] = i
+        if last_entity_index is not None:
+            for i, entity in enumerate(result, start=last_entity_index+1):
+                entity["index"] = i
+        else:
+            # If existing data has None indices, start from 1
+            for i, entity in enumerate(result, start=1):
+                entity["index"] = i
 
 
     existing_data.extend(result)
@@ -226,8 +231,12 @@ def process_pdf(file_name: str, option: str = "default") -> List[Dict[str, Optio
             continue
         if result['alcohol_type'] in ('Wines and Malt Beverages', 'All Alcoholic Beverages'):
             result['file_name'] = file_name
-            result['minutes_date'] = date.date().isoformat()
-            result['application_expiration_date'] = expiration_date.date().isoformat()
+            if date:
+                result['minutes_date'] = date.date().isoformat()
+                result['application_expiration_date'] = expiration_date.date().isoformat()
+            else:
+                result['minutes_date'] = None
+                result['application_expiration_date'] = None
             result['status'] = 'Deferred'
             final_result.append(result)
             print('--------------------------')

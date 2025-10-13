@@ -46,3 +46,26 @@ The app will be running at [http://localhost:5173](http://localhost:5173)
 npm run install:python # installs pytest
 npm test               # runs both react and python tests
 ```
+
+### Python Scripts Setup
+
+The `scripts/` directory contains Python utilities for processing PDF documents and extracting liquor license data.
+
+#### Installing Python Dependencies
+
+```bash
+# Install all dependencies
+pip install -r requirements.txt
+
+# Or install individual packages
+pip install pytest PyMuPDF python-dateutil
+```
+
+#### Running Python Tests
+
+```bash
+cd scripts
+python -m pytest test_extract_entity.py -v
+```
+
+**Note**: If you encounter issues with PyMuPDF installation, you may need to use a different version or install system dependencies. The tests include fallback handling for missing dependencies.

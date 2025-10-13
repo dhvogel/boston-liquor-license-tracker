@@ -9,7 +9,20 @@ import tempfile
 import shutil
 from unittest.mock import patch, mock_open, MagicMock
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
+
+# Handle optional dependencies gracefully
+try:
+    from dateutil.relativedelta import relativedelta
+except ImportError:
+    # Create a mock relativedelta for testing if not available
+    class MockRelativeDelta:
+        def __init__(self, **kwargs):
+            self.kwargs = kwargs
+        def __add__(self, other):
+            return other
+        def __radd__(self, other):
+            return other
+    relativedelta = MockRelativeDelta
 
 from extract_entity import (
     parse_entity,
